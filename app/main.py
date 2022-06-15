@@ -65,9 +65,11 @@ def webhook_whatsapp():
     client = WhatsAppWrapper()
     print(f"[DATA /webhook] => {request.get_json()}")
     response = client.process_webhook_notification(request.get_json())
-
-    return jsonify({
+    result = {
         "status": "success",
         "status_code": 200,
         "data": response,
-    }), 200
+    }
+    print(f"RESPONSE DATA => {result}")
+
+    return jsonify(result), 200
