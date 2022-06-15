@@ -17,6 +17,7 @@ def send_template_message():
     """
     SENDS A MESSAGE WITH TEMPLATE FROM PHONE NO
     """
+    print("[POST]: send_template_message")
     if "language_code" not in request.json:
         return jsonify({
             "error": "Language code is missing"
@@ -36,6 +37,7 @@ def send_template_message():
         language_code=request.json["language_code"],
         phone_number=request.json["phone_number"],
     )
+    print(f"POST: {response}")
 
     return jsonify({
         "data": response,
@@ -48,17 +50,20 @@ def webhook_whatsapp():
     """
     RECEIVE NOTIFICATION FROM META SERVER
     """
+    print("[POST/GET]: /webhook")
 
     if request.method == "GET":
         if request.args.get("hub.verify_token") == VERIFY_TOKEN:
+            print("[GET]: /webhook, TOKEN VERIFIED!")
             return request.args.get('hub.challenge')
+        print("[GET]: /webhook, TOKEN NOT VERIFIED")
         return jsonify({
           'message': "Authentication Failed: Token is Invalid",
 
         }), 401
 
     client = WhatsAppWrapper()
-    print(f"DATA => {request.get_json()}")
+    print(f"[DATA /webhook] => {request.get_json()}")
     response = client.process_webhook_notification(request.get_json())
 
     return jsonify({
