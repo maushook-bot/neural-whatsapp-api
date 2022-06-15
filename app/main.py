@@ -68,5 +68,6 @@ def webhook_whatsapp():
 
     return jsonify({
         "status": "success",
+        "status_code": 200,
         "data": response,
     }), 200
