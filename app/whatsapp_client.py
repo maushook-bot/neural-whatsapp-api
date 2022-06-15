@@ -44,13 +44,12 @@ class WhatsAppWrapper:
         ################################################
         response = []
 
-        for entry in data["entry"]:
-            for change in entry["changes"]:
-                response.append({
-                    "type": change["field"],
-                    "from": change["value"]["metadata"]["display_phone_number"],
+        for message in data["value"]["messages"]:
+            response.append({
+                "type": message["type"],
+                "text": message["text"],
 
-                })
+            })
         return response
 
 
