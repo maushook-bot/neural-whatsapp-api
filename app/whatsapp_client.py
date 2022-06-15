@@ -46,11 +46,14 @@ class WhatsAppWrapper:
 
         for entry in data["entry"]:
             for change in entry["changes"]:
-                for message in change["value"]["messages"]:
+                for contact, message in zip(change["value"]["contacts"], change["value"]["messages"]):
                     response.append({
                         "type": change["field"],
-                        "from": change["value"]["metadata"]["display_phone_number"],
-                        "content": message["text"]["body"],
+                        "receiver_name": change["value"]["messaging_product"],
+                        "receiver_phone": change["value"]["metadata"]["display_phone_number"],
+                        "sender_name": contact["profile"]["name"],
+                        "sender_phone": contact["wa_id"],
+                        "message_content": message["text"]["body"],
 
                     })
         return response
